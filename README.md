@@ -99,17 +99,15 @@ BBB retains various cache and log files. The general retention period for these 
 - `unrecorded_days` the retention periods of recordings for meetings which have no recording markers set (user expectation: Were not recorded)
 - `publised_days` the retention period of recordings' raw data, if these got published. To enable this, the line `#remove_raw_of_published_recordings` also has to be uncommented
 
+For directly deleting these caches, please see `Deploy a post-recording script that removes recordings without recording markers`
 
 ## Logs
 
 ### General log rotation
 If users opt to keep recording files and logs, they should know and change:
 
-- the duration for which to keep to keep the recording files in /etc/cron.daily/bigluebutton
-- the logrotate setttings in /etc/logrotate.d
-
-#### Defaults
-By default logs are stored with a retention period of two weeks.
+- the duration for which to keep to keep the recording files in `/etc/cron.daily/bigluebutton`, using the `log_history` setting
+- the logrotate setttings in `/etc/logrotate.d/(bbb-record-core.logrotate|bbb-webrtc-sfu.logrotate)` which rotate logs in `/var/log/bbb-webrtc-sfu/` every 7 days, and `/var/log/bigbluebutton/(bbb-rap-worker.log|sanity.log)` every 8 days
 
 ### nginx
 

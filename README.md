@@ -50,11 +50,14 @@ By default logs are stored with a retention period of two weeks.
 
 # Greenlight
 
-## BigBlueButton does not request consent to a privacy policy when joining a room as a guest.
+## Greenlight does not request consent to a privacy policy and/or recording of a session when joining a room as a guest.
 ### Description
 BigBlueButton has no feature that forces participants to consent to a privacy policy or being recorded prior to joining a room.
 ### Resolution
 At the moment, I just declare this issue in my privacy policy. For the future, I want to patch GL to request consent before joining.
+
+## Greenlight includes user-names in room urls
+In Greenlight, room URLs contain the username of the owner, which might also be private data. Solving this depends on https://github.com/bigbluebutton/greenlight/issues/1057
 
 ## Terms
 Greenlight supports displaying of terms and conditions for registered users/upon registration. See: http://docs.bigbluebutton.org/greenlight/gl-config.html#adding-terms-and-conditions

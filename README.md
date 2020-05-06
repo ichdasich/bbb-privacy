@@ -24,7 +24,31 @@ While greenlight allows unlisting recordings (the default), this does not mean t
 Added a third value for the listing setting (public/unlisted/private). Via an additional auth-hook on the recording server, recordings are not displayed when set to private (new default).
 Unlisted and Public keep their semantics.
 
+#### Cache files
+
+#### Retention of cache files
+
 ### Logs
+
+#### General log rotation
+If users opt to keep recording files and logs, they should know and change:
+
+- the duration for which to keep to keep the recording files in /etc/cron.daily/bigluebutton
+- the logrotate setttings in /etc/logrotate.d
+
+##### Defaults
+By default logs are stored with a retention period of two weeks.
+
+#### nginx
+
+#### freeswitch
+
+#### red5
+
+#### kurento
+
+#### Meteor/Node.js
+
 
 ## Greenlight
 
@@ -33,6 +57,16 @@ Unlisted and Public keep their semantics.
 BigBlueButton has no feature that forces participants to consent to a privacy policy or being recorded prior to joining a room.
 #### Resolution
 At the moment, I just declare this issue in my privacy policy. For the future, I want to patch GL to request consent before joining.
+
+### Terms
+Greenlight supports displaying of terms and conditions for registered users/upon registration. See: http://docs.bigbluebutton.org/greenlight/gl-config.html#adding-terms-and-conditions
+
+### Logs
+
+#### Rails Logs
+$GREENLIGHTDIR/logs/production.log
+
+#### nginx Logs
 
 ## coturn
 

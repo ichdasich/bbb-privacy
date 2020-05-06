@@ -155,6 +155,19 @@ In Greenlight, room URLs contain the username of the owner, which might also be 
 ## Terms
 Greenlight supports displaying of terms and conditions for registered users/upon registration. See: http://docs.bigbluebutton.org/greenlight/gl-config.html#adding-terms-and-conditions
 
+## All recordings are always accessible
+By default, BBB recordings are accessible, see e.g., https://github.com/bigbluebutton/bigbluebutton/issues/8505
+Additionally, the URLs for recordings are easily enumerable, see https://github.com/bigbluebutton/greenlight/issues/1466 and https://github.com/bigbluebutton/bigbluebutton/issues/9443
+Greenlight, by default provides two settings for recordings: public, i.e., the recording is listed on the room page, and unlisted, i.e., the recording is only accessible via the (enumerable) direct link.
+
+#### Resolution
+Greenlight can be patched to allow more fine-grained control of recording visibility and publications.
+With https://github.com/ichdasich/greenlight/tree/rec_restrictions a third value is added to the recording visibility pull-down menu (public/unlisted/private), which leads to corresponding
+recording metadata being set (gl-listed=true/unlisted/false) in the recording either in scalelite or on the bbb host.
+
+https://github.com/ichdasich/bbb-rec-perm can then be used to check requests for recordings against that metadata, returning a 403 if the recording is set to private, and returning the recording
+if it is set to unlisted or public.
+
 ## Logs
 
 ### Rails Logs
@@ -184,3 +197,5 @@ Then, this can be disable by switching the loglevel to 'ERROR' only in `/etc/ngi
 `access_log /dev/null;`
 
 # GDPR Considerations
+
+

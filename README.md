@@ -2,12 +2,31 @@
 
 ## Recordings
 ### BigBlueButton always records when recording of a room is enabled
-#### Description
-When used with the default frontend, greenlight, bbb always creates a recording of rooms, even if the recording button is not pressed.
+When a room is created in BBB that allows recordings (i.e., the recording button is present) BBB will always record the session.
+This is independent of the button actually being pressed. 
+The technical reason behind this is that parts of the recordings (esp. the SVG files for the Whiteboard) depend on earlier state to be properly processed, see: https://docs.bigbluebutton.org/dev/recording.html
+By default these files are stored for two weeks (see 'Retention of Cache Files' below).
+Furthermore, depending on the use-case and jurisdiction it might be prudent to retain the option to create 'retroactive' recordings, e.g., when users forgot to click the recording button.
+
 #### Resolution
-This is an inherrent feature of BBB. The best resolution so far for me has been to ensure that all recordings that have no recording markers
-are deleted directly after the recording ends. Furthermore, all locations where dependent cache files may reside (which are also kept by default)
-are mounted on memory filesystems.
+Operators have two options for handling this:
+
+##### Globally disable recordings in BBB
+Users can change `/usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties` and adjust `disableRecordingDefault=false` to `disableRecordingDefault=true` to globally disable recordings.
+
+##### Deploy a post-recording script that removes recordings without recording markers
+Users can deploy a custom script that purges recordings and cache-files of recordings if no recording markers are present. 
+
+Simple version:
+`/etc/sudoers:`
+`bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
+
+and 
+`/usr/local/bigbluebutton/core/scripts/archive/archive.rb (after line 242):`
+`	  BigBlueButton.logger.info("There's no recording marks for #{meeting_id}, deleting the recording.")`
+`	  system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
+
+For a more complete version that also explicitly deletes cache files of recordings for freeswitch/kurento, please see: https://github.com/Kalagon/bbb-recording-archive-workaround 
 
 ### BigBlueButton stores full raw recording data
 #### Description
@@ -49,6 +68,10 @@ By default logs are stored with a retention period of two weeks.
 
 
 # Greenlight
+
+## BigBlueButton always records when recording of a room is enabled
+### Description
+When used with the default frontend, greenlight, bbb always creates a recording of rooms, even if the recording button is not pressed.
 
 ## Greenlight does not request consent to a privacy policy and/or recording of a session when joining a room as a guest.
 ### Description

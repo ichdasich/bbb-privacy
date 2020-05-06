@@ -30,8 +30,8 @@ Users can deploy a custom script that purges recordings and cache-files of
 recordings if no recording markers are present. 
 
 Simple version:
-`/etc/sudoers:`
-`bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
+`/etc/sudoers:
+bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
 
 and 
 `/usr/local/bigbluebutton/core/scripts/archive/archive.rb (after line 242):`

@@ -28,6 +28,12 @@ and
 
 For a more complete version that also explicitly deletes cache files of recordings for freeswitch/kurento, please see: https://github.com/Kalagon/bbb-recording-archive-workaround 
 
+### BigBlueButton stores presentations froms sessions, even if recordings are disabled
+BBB stores the presentations of sessions in /var/bigbluebutton even if a recording is disabled. 
+
+#### Resolution
+Unknown, unclear which post-recording actions are triggered if no recording is created.
+
 ### BigBlueButton stores full raw recording data
 BigBlueButton stores the raw recording data for meetings that have recording markers indefinately. This might include parts of the session where BBB was not supposed to record.
 
@@ -116,6 +122,8 @@ This can be disable by switching the loglevel to 'ERROR' only in `/etc/nginx/sit
 `access_log /dev/null;`
 
 ### freeswitch
+Freeswitch, as installed, by default logs with loglevel DEBUG. This can be changed in `/etc/bbb-fsesl-akka/application.conf` and `/etc/bbb-fsesl-akka/logback.xml`.
+The default configuration Stores usernames, joined sessions and timestamps.
 
 ### red5
 

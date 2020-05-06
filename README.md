@@ -110,6 +110,10 @@ If users opt to keep recording files and logs, they should know and change:
 - the logrotate setttings in `/etc/logrotate.d/(bbb-record-core.logrotate|bbb-webrtc-sfu.logrotate)` which rotate logs in `/var/log/bbb-webrtc-sfu/` every 7 days, and `/var/log/bigbluebutton/(bbb-rap-worker.log|sanity.log)` every 8 days
 
 ### nginx
+By default bbb has full access logs enabled for nginx. This includes users IP addresses, usernames, joined meetings, etc. 
+This can be disable by switching the loglevel to 'ERROR' only in `/etc/nginx/sites-available/bigbluebutton` and `/etc/nginx/nginx.conf`:
+`error_log /var/log/nginx/bigbluebutton.error.log;`
+`access_log /dev/null;`
 
 ### freeswitch
 

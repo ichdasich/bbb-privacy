@@ -31,10 +31,20 @@ For a more complete version that also explicitly deletes cache files of recordin
 ### BigBlueButton stores full raw recording data
 #### Description
 BigBlueButton stores the raw recording data for meetings that have recording markers indefinately. This might include parts of the session where BBB was not supposed to record.
-#### Resolution
-Delete raw recording data after a meeting has been archived.
 
-### All recordings are always accessible when using Greenlight and BigBlueButton together
+#### Resolution
+This can be resolved by deleting raw recording data after a meeting has been archived.
+For setups using scalelite, this can be achieved by the following changes:
+
+`/etc/sudoers:`
+`bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
+
+`/usr/local/bigbluebutton/core/scripts/post_publish/scalelite_post_publish.rb, after line 66:`
+`system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
+
+For other systems, removal of `/var/bigbluebutton/recording/raw/$meeting/` should be added to the post-archive script.
+
+### All recordings are always accessible
 #### Description
 While greenlight allows unlisting recordings (the default), this does not mean that the recording is not accessible via its direct link.
 #### Resolution

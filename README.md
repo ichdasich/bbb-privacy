@@ -68,7 +68,7 @@ changes:
 `/etc/sudoers:`  
 `bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`  
 
-`/usr/local/bigbluebutton/core/scripts/post_publish/scalelite_post_publish.rb, after line 66:`  
+`/usr/local/bigbluebutton/core/scripts/post_publish/scalelite_post_publish.rb`, after line 66:  
 `system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`  
 
 For other systems, removal of `/var/bigbluebutton/recording/raw/$meeting/`

@@ -30,13 +30,13 @@ Users can deploy a custom script that purges recordings and cache-files of
 recordings if no recording markers are present. 
 
 Simple version:
-`/etc/sudoers:
+`/etc/sudoers:  
 bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
 
 and 
-`/usr/local/bigbluebutton/core/scripts/archive/archive.rb (after line 242):`
-`	  BigBlueButton.logger.info("There's no recording marks for #{meeting_id}, deleting the recording.")`
-`	  system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
+`/usr/local/bigbluebutton/core/scripts/archive/archive.rb (after line 242):  
+	  BigBlueButton.logger.info("There's no recording marks for #{meeting_id}, deleting the recording.")  
+	  system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
 
 For a more complete version that also explicitly deletes cache files of
 recordings for freeswitch/kurento, please see:
@@ -64,11 +64,11 @@ This can be resolved by deleting raw recording data after a meeting has been
 archived.  For setups using scalelite, this can be achieved by the following
 changes:
 
-`/etc/sudoers:`
-`bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
+`/etc/sudoers:  
+bigbluebutton ALL = NOPASSWD: /usr/bin/bbb-record`
 
-`/usr/local/bigbluebutton/core/scripts/post_publish/scalelite_post_publish.rb, after line 66:`
-`system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
+`/usr/local/bigbluebutton/core/scripts/post_publish/scalelite_post_publish.rb, after line 66:  
+system('sudo', 'bbb-record', '--delete', "#{meeting_id}") || raise('Failed to delete local recording')`
 
 For other systems, removal of `/var/bigbluebutton/recording/raw/$meeting/`
 should be added to the post-archive script.
@@ -97,15 +97,15 @@ https://github.com/ichdasich/bbb-rec-perm
 The stack of BBB creates various cache files when recordings are enabled.
 Specifically in:
 
-`/var/bigbluebutton/recording/raw/`
-`/var/bigbluebutton/unpublished/`
-`/var/bigbluebutton/published/presentation/`
-`/usr/share/red5/webapps/video/streams/`
-`/usr/share/red5/webapps/screenshare/streams/`
-`/usr/share/red5/webapps/video-broadcast/streams/`
-`/var/kurento/recordings/`
-`/var/kurento/screenshare/`
-`/var/freeswitch/meetings/`
+`/var/bigbluebutton/recording/raw/  
+/var/bigbluebutton/unpublished/  
+/var/bigbluebutton/published/presentation/  
+/usr/share/red5/webapps/video/streams/  
+/usr/share/red5/webapps/screenshare/streams/  
+/usr/share/red5/webapps/video-broadcast/streams/  
+/var/kurento/recordings/  
+/var/kurento/screenshare/  
+/var/freeswitch/meetings/`
 
 #### Resolution
 
@@ -116,25 +116,25 @@ recording caches in-memory.  For this, the following lines have to be added to
 `/etc/fstab`:
 
 
-`tmpfs /var/bigbluebutton/recording/raw/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
-`tmpfs /var/bigbluebutton/unpublished/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
-`tmpfs /var/bigbluebutton/published/presentation/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
-`tmpfs /usr/share/red5/webapps/video/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
-`tmpfs /usr/share/red5/webapps/screenshare/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
-`tmpfs /usr/share/red5/webapps/video-broadcast/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
-`tmpfs /var/kurento/recordings/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0`
-`tmpfs /var/kurento/screenshare/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0`
-`tmpfs /var/freeswitch/meetings/ tmpfs rw,nosuid,noatime,uid=997,gid=997,size=16G,mode=0755   0    0`
+`tmpfs /var/bigbluebutton/recording/raw/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0  
+tmpfs /var/bigbluebutton/unpublished/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0  
+tmpfs /var/bigbluebutton/published/presentation/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0  
+tmpfs /usr/share/red5/webapps/video/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0  
+tmpfs /usr/share/red5/webapps/screenshare/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0  
+tmpfs /usr/share/red5/webapps/video-broadcast/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0  
+tmpfs /var/kurento/recordings/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0  
+tmpfs /var/kurento/screenshare/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0  
+tmpfs /var/freeswitch/meetings/ tmpfs rw,nosuid,noatime,uid=997,gid=997,size=16G,mode=0755   0    0`
 
 After that, the operator has to execute `bbb-conf --stop; mount -a; bbb-conf --start`.
 
 Furthermore, the uid/gid values have to be adjusted to the local installation.
 The above example assumes:
 
-`red5:x:999:999:red5 user-daemon:/usr/share/red5:/bin/false`
-`bigbluebutton:x:998:998:bigbluebutton:/home/bigbluebutton:/bin/false`
-`freeswitch:x:997:997:freeswitch:/opt/freeswitch:/bin/bash`
-`kurento:x:996:996::/var/lib/kurento:`
+`red5:x:999:999:red5 user-daemon:/usr/share/red5:/bin/false  
+bigbluebutton:x:998:998:bigbluebutton:/home/bigbluebutton:/bin/false  
+freeswitch:x:997:997:freeswitch:/opt/freeswitch:/bin/bash  
+kurento:x:996:996::/var/lib/kurento:`
 
 
 ### Retention of cache files
@@ -164,8 +164,8 @@ addresses, usernames, joined meetings, etc.  This can be disable by switching
 the loglevel to 'ERROR' only in `/etc/nginx/sites-available/bigbluebutton` and
 `/etc/nginx/nginx.conf`:
 
-`error_log /var/log/nginx/bigbluebutton.error.log;`
-`access_log /dev/null;`
+`error_log /var/log/nginx/bigbluebutton.error.log;  
+access_log /dev/null;`
 
 ### freeswitch
 
@@ -273,8 +273,8 @@ users IP addresses, usernames, joined meetings, etc.  This can be disable by
 switching the loglevel to 'ERROR' only in
 `/etc/nginx/sites-available/bigbluebutton` and `/etc/nginx/nginx.conf`:
 
-`error_log /var/log/nginx/bigbluebutton.error.log;`
-`access_log /dev/null;`
+`error_log /var/log/nginx/bigbluebutton.error.log;  
+access_log /dev/null;`
 
 # coturn
 
@@ -299,8 +299,8 @@ host.
 Then, this can be disable by switching the loglevel to 'ERROR' only in
 `/etc/nginx/sites-available/bigbluebutton` and `/etc/nginx/nginx.conf`:
 
-`error_log /var/log/nginx/bigbluebutton.error.log;`
-`access_log /dev/null;`
+`error_log /var/log/nginx/bigbluebutton.error.log;  
+access_log /dev/null;`
 
 # GDPR Considerations
 

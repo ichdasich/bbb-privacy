@@ -126,10 +126,11 @@ Freeswitch, as installed, by default logs with loglevel DEBUG. This can be chang
 The default configuration Stores usernames, joined sessions and timestamps.
 
 ### red5
+Seems to only log meeting ids and timestamps of when video feeds are started. Still is configured for log-level 'info', which spills the disk. Can be configured in `/etc/red5/logback.xml`.
 
 ### kurento
-
-### Meteor/Node.js
+Logs session names and timestamps, as well as user IP addresses. This also includes user IP addresses behind NATs, i.e., the actual client addresses, potentially making users identifiable accross sessions. 
+Can be configured in `/etc/default/kurento-media-server`, see https://doc-kurento.readthedocs.io/en/latest/features/logging.html
 
 
 # Greenlight

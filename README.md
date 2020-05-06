@@ -198,4 +198,13 @@ Then, this can be disable by switching the loglevel to 'ERROR' only in `/etc/ngi
 
 # GDPR Considerations
 
+The GDPR lists several important considerations, especially:
+
+- The right to request a (machine readable) aggregate of all private data stored
+- The right to have all personal data be erased
+
+Both pose challenges in the context of BBB, especially when considering that rooms
+can be joined anonymously/ This means that an operator may not be able to identify
+all private information connected to a user easily, even though it is clearly personal,
+e.g., webcam recordings of a room joined to as a guest with a pseudonym. 
 

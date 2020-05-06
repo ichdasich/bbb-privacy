@@ -29,7 +29,6 @@ and
 For a more complete version that also explicitly deletes cache files of recordings for freeswitch/kurento, please see: https://github.com/Kalagon/bbb-recording-archive-workaround 
 
 ### BigBlueButton stores full raw recording data
-#### Description
 BigBlueButton stores the raw recording data for meetings that have recording markers indefinately. This might include parts of the session where BBB was not supposed to record.
 
 #### Resolution
@@ -44,16 +43,62 @@ For setups using scalelite, this can be achieved by the following changes:
 
 For other systems, removal of `/var/bigbluebutton/recording/raw/$meeting/` should be added to the post-archive script.
 
+This data can also be removed periodically, see `Retention of cache files`
+
 ### All recordings are always accessible
-#### Description
-While greenlight allows unlisting recordings (the default), this does not mean that the recording is not accessible via its direct link.
+By default, BBB recordings are accessible, see e.g., https://github.com/bigbluebutton/bigbluebutton/issues/8505
+Additionally, the URLs for recordings are easily enumerable, see https://github.com/bigbluebutton/greenlight/issues/1466 and https://github.com/bigbluebutton/bigbluebutton/issues/9443
+
 #### Resolution
-Added a third value for the listing setting (public/unlisted/private). Via an additional auth-hook on the recording server, recordings are not displayed when set to private (new default).
-Unlisted and Public keep their semantics.
+Users can change the nginx configuration to restrict access to the recording URLs.
+Depending on the use-case, the auth statement in nginx can interact with the used frontend to enforce further restrictions (e.g., requesting the same credentials as the frontend). 
+For an example of configuration options and an authentication callback to a greenlight frontend, see: https://github.com/ichdasich/bbb-rec-perm
 
 ### Cache files
+The stack of BBB creates various cache files when recordings are enabled. Specifically in:
+
+`/var/bigbluebutton/recording/raw/`
+`/var/bigbluebutton/unpublished/`
+`/var/bigbluebutton/published/presentation/`
+`/usr/share/red5/webapps/video/streams/`
+`/usr/share/red5/webapps/screenshare/streams/`
+`/usr/share/red5/webapps/video-broadcast/streams/`
+`/var/kurento/recordings/`
+`/var/kurento/screenshare/`
+`/var/freeswitch/meetings/`
+
+#### Resolution
+For automatically cleaning up these files after recordings, see `BigBlueButton always records when recording of a room is enabled`.
+In addition, to prevent this data to be written to disk, these files can be mounted with tmpfs to keep recording caches in-memory. 
+For this, the following lines have to be added to `/etc/fstab`:
+
+
+`tmpfs /var/bigbluebutton/recording/raw/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
+`tmpfs /var/bigbluebutton/unpublished/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
+`tmpfs /var/bigbluebutton/published/presentation/ tmpfs rw,nosuid,noatime,uid=998,gid=998,size=16G,mode=0755   0    0`
+`tmpfs /usr/share/red5/webapps/video/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
+`tmpfs /usr/share/red5/webapps/screenshare/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
+`tmpfs /usr/share/red5/webapps/video-broadcast/streams/ tmpfs rw,nosuid,noatime,uid=999,gid=999,size=16G,mode=0755   0    0`
+`tmpfs /var/kurento/recordings/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0`
+`tmpfs /var/kurento/screenshare/ tmpfs rw,nosuid,noatime,uid=996,gid=996,size=16G,mode=0755   0    0`
+`tmpfs /var/freeswitch/meetings/ tmpfs rw,nosuid,noatime,uid=997,gid=997,size=16G,mode=0755   0    0`
+
+After that, the operator has to execute `bbb-conf --stop; mount -a; bbb-conf --start`.
+
+Furthermore, the uid/gid values have to be adjusted to the local installation. The above example assumes:
+`red5:x:999:999:red5 user-daemon:/usr/share/red5:/bin/false`
+`bigbluebutton:x:998:998:bigbluebutton:/home/bigbluebutton:/bin/false`
+`freeswitch:x:997:997:freeswitch:/opt/freeswitch:/bin/bash`
+`kurento:x:996:996::/var/lib/kurento:`
+
 
 ### Retention of cache files
+BBB retains various cache and log files. The general retention period for these files can be configured in `/etc/cron.daily/bigbluebutton`.
+
+- `history` is the retention period for presentations, red5 caches, kurento caches, and freeswitch caches in days
+- `unrecorded_days` the retention periods of recordings for meetings which have no recording markers set (user expectation: Were not recorded)
+- `publised_days` the retention period of recordings' raw data, if these got published. To enable this, the line `#remove_raw_of_published_recordings` also has to be uncommented
+
 
 ## Logs
 

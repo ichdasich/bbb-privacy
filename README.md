@@ -132,18 +132,22 @@ Seems to only log meeting ids and timestamps of when video feeds are started. St
 Logs session names and timestamps, as well as user IP addresses. This also includes user IP addresses behind NATs, i.e., the actual client addresses, potentially making users identifiable accross sessions. 
 Can be configured in `/etc/default/kurento-media-server`, see https://doc-kurento.readthedocs.io/en/latest/features/logging.html
 
-
 # Greenlight
 
 ## BigBlueButton always records when recording of a room is enabled
-### Description
-When used with the default frontend, greenlight, bbb always creates a recording of rooms, even if the recording button is not pressed.
+When using an upstream greenlight, bbb rooms are always created with 'record=true'. This leads bbb to record full sessions, even if the recording button is not pressed, see above.
+
+### Resolution
+There exists a pull-request that adds per-room enabling of the recording feature, see: https://github.com/bigbluebutton/greenlight/issues/1163
 
 ## Greenlight does not request consent to a privacy policy and/or recording of a session when joining a room as a guest.
-### Description
 BigBlueButton has no feature that forces participants to consent to a privacy policy or being recorded prior to joining a room.
+
 ### Resolution
-At the moment, I just declare this issue in my privacy policy. For the future, I want to patch GL to request consent before joining.
+In https://github.com/bigbluebutton/greenlight/issues/1163 it is discussed how this can be addressed. https://github.com/bigbluebutton/greenlight/blob/52ed7150f68c6c66c0488374ccc3457d30fd09d4/app/views/rooms/components/_room_event.html.erb#L21 adds a disclaimer.
+The code could be extended to provide a link to the privacy policy, and a checkbox users have to press to acknowledge that the meeting they are joining will be recorded, and that they consent to this; The join button should only be enabled when that checkmark is set.
+
+A more substantial change to BBB and greenlight would be selective recording, i.e., excluding video, audio, chat and drawing input from users that did not consent to a recording.
 
 ## Greenlight includes user-names in room urls
 In Greenlight, room URLs contain the username of the owner, which might also be private data. Solving this depends on https://github.com/bigbluebutton/greenlight/issues/1057
@@ -154,10 +158,29 @@ Greenlight supports displaying of terms and conditions for registered users/upon
 ## Logs
 
 ### Rails Logs
-$GREENLIGHTDIR/logs/production.log
+By default, greenlight logs to $GREENLIGHTDIR/logs/production.log. Removing that line from .env does keep the logs, but does not expose them to the docker host.
+The easiest sollution is linking GREENLIGHTDIR/logs/production.log to /dev/null
 
 ### nginx Logs
+By default greenlight has full access logs enabled for nginx. This includes users IP addresses, usernames, joined meetings, etc. 
+This can be disable by switching the loglevel to 'ERROR' only in `/etc/nginx/sites-available/bigbluebutton` and `/etc/nginx/nginx.conf`:
+`error_log /var/log/nginx/bigbluebutton.error.log;`
+`access_log /dev/null;`
 
 # coturn
+By default, coturn logs to /var/log/coturn.log, with regular log-rotation. This logfile includes IP addresses of users using the TURN server, and the ports they use. Together with other BBB logs this enables identification of the sessions these users joined.
+
+coturn has no option of restricting logging. The best option here is linking /var/log/coturn.log to /dev/null
+
+# scalelite
 
 ## Logs
+Scalelite uses a container running nginx as frontend, which accumulates standard access logs. 
+By default scalelite has full access logs enabled for nginx. This includes users IP addresses, usernames, joined meetings, watched meetings etc. 
+The easiest way to address this is migrating the nginx to the host. 
+
+Then, this can be disable by switching the loglevel to 'ERROR' only in `/etc/nginx/sites-available/bigbluebutton` and `/etc/nginx/nginx.conf`:
+`error_log /var/log/nginx/bigbluebutton.error.log;`
+`access_log /dev/null;`
+
+# GDPR Considerations

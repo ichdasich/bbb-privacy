@@ -224,6 +224,9 @@ potentially making users identifiable accross sessions.  Can be configured in
 `/etc/default/kurento-media-server`, see
 https://doc-kurento.readthedocs.io/en/latest/features/logging.html
 
+Note, that this can most likely be overridden by kurento's systemd unit file.
+Hence, `--gst-debug-level=1` should also be set in `/usr/lib/systemd/system/kurento-media-server.service`.
+
 ## Integrations
 
 ### TURN server
@@ -234,6 +237,20 @@ configure it in
 `/usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml`, see
 https://docs.bigbluebutton.org/2.2/setup-turn-server.html 
 
+### sip.js 
+
+There is a hardcoded google STUN server in
+`/usr/share/meteor/bundle/programs/web.browser/app/compatibility/sip.js`.
+However, this should never be used, as a failed `GET` of the TURN/STUN settings
+in BBB-web should return an empty array, overwriting this setting. Nonetheless,
+careful users may want to replace this default.
+
+### Hardcoded google STUN server for kurento
+
+Kurento uses a google STUN server to identify its own external IP address on
+each ICE connect. This can be changed in `/etc/kurento/modules/kurento/WebRtcEndpoint.conf.ini`,
+by statically configuring the external interface and disabling the stun server 
+if the kurento system itself does not sit behind NAT.
 
 # Greenlight
 

@@ -182,6 +182,14 @@ If users opt to keep recording files and logs, they should know and change:
 - the duration for which to keep to keep the recording files in `/etc/cron.daily/bigluebutton`, using the `log_history` setting
 - the logrotate setttings in `/etc/logrotate.d/(bbb-record-core.logrotate|bbb-webrtc-sfu.logrotate)` which rotate logs in `/var/log/bbb-webrtc-sfu/` every 7 days, and `/var/log/bigbluebutton/(bbb-rap-worker.log|sanity.log)` every 8 days
 
+### BigBlueButton logging
+This logs all interactions with rooms, i.e., when they were created, who joined 
+when, and when they left in /var/log/bigbluebutton/bbb-web.log
+
+The log verbosity of the core application can be reduced by setting
+`appLogLevel=Error` in
+`/usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties`.
+
 ### nginx
 
 By default bbb has full access logs enabled for nginx. This includes users IP

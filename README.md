@@ -1,3 +1,7 @@
+'''Contributors:'''
+- basisbit
+- prlanzarin
+- zner0L
 
 In many countries there exist regulation of data protection. For operators of
 BigBlueButton services, especially private data protection regulations are an

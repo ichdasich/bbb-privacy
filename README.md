@@ -1,5 +1,13 @@
 # BigBlueButton
 
+This section documents privacy related settings, defaults, and configuration
+options in BigBlueButton itself. Keep in mind that your configration changes
+here may be silently overwritten upon upgrades via apt, see
+https://github.com/bigbluebutton/bigbluebutton/issues/9111 To prevent this,
+make sure to follow
+http://docs.bigbluebutton.org/2.2/customize.html#automatically-apply-configuration-changes-on-restart
+to ensure changes are retained upon upgrades and restarts.
+
 ## Recordings
 ### BigBlueButton always records when recording of a room is enabled
 

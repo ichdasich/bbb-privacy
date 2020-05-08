@@ -69,8 +69,8 @@ https://github.com/Kalagon/bbb-recording-archive-workaround
 
 ### BigBlueButton stores presentations froms sessions, even if recordings are disabled
 
-BBB stores the presentations of sessions in /var/bigbluebutton even if a
-recording is disabled. 
+BBB stores the presentations of sessions in /var/bigbluebutton even if the room 
+is started with record=false.
 
 #### Resolution
 

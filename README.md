@@ -1,3 +1,15 @@
+
+In many countries there exist regulation of data protection. For operators of
+BigBlueButton services, especially private data protection regulations are an
+important topic. In the European Union the relevant regulation is the General
+Data Protection Regulation (GDPR). Many other countries also adopted similar
+regulations (for example the California Consumer Privacy Act (CCPA) in
+California, USA) and some of these regulation even have to be complied with
+outside of these countries under certain conditions. The following
+documentation is supposed to help understand where private data gets processed
+and stored in a typical setup of BigBlueButton, and what configuration options
+there are.
+
 # BigBlueButton
 
 This section documents privacy related settings, defaults, and configuration

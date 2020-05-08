@@ -46,7 +46,10 @@ Operators have two options for handling this:
 
 Users can change `/usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties`
 and adjust `disableRecordingDefault=false` to `disableRecordingDefault=true` to
-globally disable recordings.
+globally disable recordings. Furthermore, Recording of breakout rooms should be
+disabled by setting `breakoutRoomsRecord=false`. In general, this is an
+advisable idea (independent of `disableRecordingDefault=true`, as break-out
+rooms might imply a certain level of privacy.
 
 ##### Deploy a post-recording script that removes recordings without recording markers 
 

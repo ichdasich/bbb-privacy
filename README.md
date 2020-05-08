@@ -224,7 +224,6 @@ configure it in
 https://docs.bigbluebutton.org/2.2/setup-turn-server.html 
 
 
-
 # Greenlight
 
 ## BigBlueButton always records when recording of a room is enabled
@@ -339,7 +338,7 @@ Then, this can be disable by switching the loglevel to 'ERROR' only in
 `error_log /var/log/nginx/bigbluebutton.error.log;`  
 `access_log /dev/null;`  
 
-# GDPR Considerations
+# General GDPR Considerations
 
 The GDPR lists several important considerations, especially:
 
@@ -351,4 +350,3 @@ rooms can be joined anonymously/ This means that an operator may not be able to
 identify all private information connected to a user easily, even though it is
 clearly personal, e.g., webcam recordings of a room joined to as a guest with a
 pseudonym. 
-

@@ -189,6 +189,18 @@ potentially making users identifiable accross sessions.  Can be configured in
 `/etc/default/kurento-media-server`, see
 https://doc-kurento.readthedocs.io/en/latest/features/logging.html
 
+## Integrations
+
+### TURN server
+
+BBB uses a TURN server for nat traversal. By default, a STUN server from
+freeswitch.org is configured for BBB. Set up your own TURN/STUN server, and
+configure it in
+`/usr/share/bbb-web/WEB-INF/classes/spring/turn-stun-servers.xml`, see
+https://docs.bigbluebutton.org/2.2/setup-turn-server.html 
+
+
+
 # Greenlight
 
 ## BigBlueButton always records when recording of a room is enabled

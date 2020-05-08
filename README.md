@@ -252,6 +252,12 @@ each ICE connect. This can be changed in `/etc/kurento/modules/kurento/WebRtcEnd
 by statically configuring the external interface and disabling the stun server 
 if the kurento system itself does not sit behind NAT.
 
+### Kurento client side defaults
+
+For client side kurento activities (listen only, screenshare, video) there is a
+public fallback STUN server pool which is used if the bbb-web GET fails. There
+is work on removing this default.
+
 # Greenlight
 
 ## BigBlueButton always records when recording of a room is enabled

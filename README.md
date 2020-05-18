@@ -176,6 +176,18 @@ BBB retains various cache and log files. The general retention period for these 
 For directly deleting these caches, please see 
 'Deploy a post-recording script that removes recordings without recording markers'
 
+### BigBlueButton does not delete recordings when it receives a deleteRecording request
+
+A stand-alone BBB server (unlike with scalelite) does not delete recordings 
+when it receives a deleteRecording request via the API. Instead, it moves the
+recording to `/var/bigbluebutton/deleted` and unpublishes it.
+
+#### Resolution
+
+There is no easy resolution configurable. Users are advised to create a
+high-frequency cron-job, that deletes the contents of
+`/var/bigbluebutton/deleted`.
+
 ## Logs
 
 ### General log rotation
